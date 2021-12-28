@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-author
+      author: Vitaly Yagufarov
+      changes:
+        - insert:
+            tableName: passport
+            columns:
+              - column:
+                  name: series
+                  value: "RU11111111"
+              - column:
+                  name: name
+                  value: "Fedorov Fedor"
+              - column:
+                  name: expiration_date
+                  value: "2022-02-22 00:00:00"
+        - insert:
+            tableName: passport
+            columns:
+              - column:
+                  name: series
+                  value: "RU22222222"
+              - column:
+                  name: name
+                  value: "Ivanov Ivan"
+              - column:
+                  name: expiration_date
+                  value: "2021-12-15 00:00:00"
+        - insert:
+            tableName: passport
+            columns:
+              - column:
+                  name: series
+                  value: "RU33333333"
+              - column:
+                  name: name
+                  value: "Semenov Semen"
+              - column:
+                  name: expiration_date
+                  value: "2022-03-02 00:00:00"
+        - insert:
+            tableName: passport
+            columns:
+              - column:
+                  name: series
+                  value: "RU44444444"
+              - column:
+                  name: name
+                  value: "Petrov Petr"
+              - column:
+                  name: expiration_date
+                  value: "2022-02-17 00:00:00"
+        - insert:
+            tableName: passport
+            columns:
+              - column:
+                  name: series
+                  value: "RU55555555"
+              - column:
+                  name: name
+                  value: "Zimin Igor"
+              - column:
+                  name: expiration_date
+                  value: "2022-01-29 00:00:00"
