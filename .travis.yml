@@ -1,0 +1,20 @@
+language: java
+jdk:
+  - openjdk17
+
+services:
+  - postgresql
+before_install:
+  - psql -c 'create database passport;' -U postgres
+install: true
+sudo: false
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      -for.viy@gmail.com
+    on_success: never
+    on_failure: always
