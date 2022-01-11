@@ -5,11 +5,15 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.job4j.client.domain.Passport;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Class PassportService.
@@ -19,14 +23,17 @@ import java.util.List;
  * @since 21.12.2021
  */
 @Service
+@EnableScheduling
 public class PassportService {
+
+    private final KafkaTemplate<String, List<Passport>> kafkaTemplate;
+    private final RestTemplate rest;
 
     @Value("${api-server}")
     private String api;
 
-    private final RestTemplate rest;
-
-    public PassportService(RestTemplate rest) {
+    public PassportService(KafkaTemplate<String, List<Passport>> kafkaTemplate, RestTemplate rest) {
+        this.kafkaTemplate = kafkaTemplate;
         this.rest = rest;
     }
 
@@ -87,5 +94,13 @@ public class PassportService {
                 new ParameterizedTypeReference<List<Passport>>() {
                 }
         ).getBody();
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    public void checkPassportByDate() {
+        List<Passport> passports = getExpiredPassport();
+        if (!passports.isEmpty()) {
+            kafkaTemplate.send("mail", UUID.randomUUID().toString(), passports);
+        }
     }
 }
